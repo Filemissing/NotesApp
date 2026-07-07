@@ -1,0 +1,30 @@
+﻿@page
+@model NotesApp.Pages.Projects.IndexModel
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h1>Projects</h1>
+
+<a asp-page="./Create" class="btn btn-primary">
+    New Project
+</a>
+
+@if (Model.Projects.Count == 0)
+{
+    <p>No projects yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var project in Model.Projects)
+        {
+            <li>
+                <a asp-page="./Details" asp-route-id="@project.Id">
+                    @project.Name
+                </a>
+            </li>
+        }
+    </ul>
+}
