@@ -278,27 +278,7 @@ body {
 
 .note-list {
     list-style: none;
-
     padding: 0;
-}
-
-
-.note-list li {
-    padding: 8px;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-
-.note-list li:hover {
-    background-color: #eee;
-}
-
-
-.note-list .active {
-    font-weight: bold;
 }
 
 
@@ -359,6 +339,44 @@ body {
     line-height: 1.6;
 }
 
+.note-title-container {
+    display: flex;
+
+    align-items: center;
+}
+
+
+.note-title-input {
+    flex: 1;
+}
+
+.delete-button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #dc3545;
+
+    cursor: pointer;
+
+    transition: background-color 0.15s ease;
+}
+
+
+.delete-button:hover {
+    background-color: #f8d7da;
+}
+
 .note-title-input {
     width: 100%;
 
@@ -374,4 +392,35 @@ body {
 
 .note-title-input:focus {
     border-bottom: 1px solid #ccc;
+}
+
+.app-button {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 10px 14px;
+    margin: 4px;
+
+    border-radius: 8px;
+    border: none;
+
+    text-decoration: none;
+
+    color: inherit;
+
+    cursor: pointer;
+}
+
+
+.app-button:hover {
+    background-color: #f0f0f0;
+
+    color: inherit;
+}
+
+
+.app-button:active {
+    background-color: #e5e5e5;
 }

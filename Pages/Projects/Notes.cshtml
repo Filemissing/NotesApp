@@ -16,7 +16,7 @@
               asp-page-handler="Create"
               asp-route-id="@Model.Project.Id">
 
-            <button class="add-note-button">
+            <button class="app-button">
                 <i class="bi bi-plus"></i>
                 New Note
             </button>
@@ -29,6 +29,7 @@
             {
                 <li>
                     <a id="note-link-@note.Id"
+                       class="app-button"
                        asp-page="./Notes"
                        asp-route-id="@Model.Project.Id"
                        asp-route-noteId="@note.Id">
@@ -55,11 +56,23 @@
                    value="@Model.SelectedNote.Id" />
 
             <div class="note-title-container">
-
                 <input id="note-title"
                        class="note-title-input"
                        value="@Model.SelectedNote.Title" />
 
+                <form method="post"
+                      asp-page-handler="Delete"
+                      asp-route-id="@Model.Project.Id"
+                      asp-route-noteId="@Model.SelectedNote.Id"
+                      onsubmit="return confirm('Are you sure you want to delete this note?');">
+
+                    <button class="delete-button"
+                            type="submit">
+
+                        <i class="bi bi-trash"></i>
+
+                    </button>
+                </form>
             </div>
 
             <div class="markdown-editor">

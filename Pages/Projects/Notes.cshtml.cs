@@ -68,6 +68,29 @@ namespace NotesApp.Pages.Projects
             });
         }
 
+        public async Task<IActionResult> OnPostDeleteAsync(int id, int noteId)
+        {
+            var note = await _context.Notes
+                .FirstOrDefaultAsync(n => n.Id == noteId);
+
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+
+            _context.Notes.Remove(note);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToPage("./Notes", new
+            {
+                id = id
+            });
+        }
+
         public async Task<IActionResult> OnPostSaveAsync([FromBody] SaveRequest request)
         {
             var note = await _context.Notes
