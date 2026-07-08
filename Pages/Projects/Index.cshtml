@@ -21,7 +21,7 @@ else
         @foreach (var project in Model.Projects)
         {
             <li>
-                <a asp-page="./Details" asp-route-id="@project.Id">
+                <a asp-page="./Tasks" asp-route-id="@project.Id">
                     @project.Name
                 </a>
             </li>

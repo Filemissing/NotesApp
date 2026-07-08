@@ -1,0 +1,108 @@
+﻿@page "{id:int}"
+@model NotesApp.Pages.Projects.NotesModel
+
+@{
+    ViewData["Title"] = "Notes";
+}
+
+<partial name="_ProjectHeader" model="Model.Project" />
+
+
+<div class="notes-container">
+
+    <aside class="notes-sidebar">
+
+        <form method="post"
+              asp-page-handler="Create"
+              asp-route-id="@Model.Project.Id">
+
+            <button class="add-note-button">
+                <i class="bi bi-plus"></i>
+                New Note
+            </button>
+        </form>
+
+
+        <ul class="note-list">
+
+            @foreach (var note in Model.Project.Notes)
+            {
+                <li>
+                    <a id="note-link-@note.Id"
+                       asp-page="./Notes"
+                       asp-route-id="@Model.Project.Id"
+                       asp-route-noteId="@note.Id">
+
+                        <span class="note-title-display">
+                            @note.Title
+                        </span>
+
+                    </a>
+                </li>
+            }
+
+        </ul>
+
+    </aside>
+
+
+    <section class="note-content">
+
+        @if (Model.SelectedNote != null)
+        {
+            <input type="hidden"
+                   id="note-id"
+                   value="@Model.SelectedNote.Id" />
+
+            <div class="note-title-container">
+
+                <input id="note-title"
+                       class="note-title-input"
+                       value="@Model.SelectedNote.Title" />
+
+            </div>
+
+            <div class="markdown-editor">
+
+                <div class="editor-panel">
+                    
+                    <textarea id="markdown-input"
+                              class="markdown-input"
+                              name="content">@Model.SelectedNote.Content</textarea>
+                    
+                    <span id="save-status">
+                        Saved
+                    </span>
+                </div>
+
+
+                <div class="preview-panel">
+
+                    <div id="markdown-preview"
+                         class="markdown-content">
+
+                        @Html.Raw(
+                            NotesApp.Helpers.MarkdownHelper
+                                .ToHtml(Model.SelectedNote.Content)
+                        )
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <p>
+                Select a note
+            </p>
+        }
+
+    </section>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/markdown-preview.js" asp-append-version="true"></script>
+}

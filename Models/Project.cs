@@ -5,5 +5,6 @@ namespace NotesApp.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<ProjectTask> Tasks { get; set; } = new();
+        public List<Note> Notes { get; set; } = new();
     }
 }

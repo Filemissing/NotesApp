@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0px;
 }
 
 .app-container {
@@ -130,17 +130,13 @@ body {
 .task-delete button {
     height: 25px;
     width: 25px;
-
     line-height: 1;
-
     padding: 0px;
-    padding-top: 1px;
-    padding-bottom: 5px;
-
+    align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 50%;
     background: none;
-
     font-size: 20px;
 }
     .task-delete:hover{
@@ -188,13 +184,194 @@ body {
     color: white;
     font-size: 24px;
     line-height: 1;
-    align-items: start;
+    align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: transform 0.15s ease;
-    padding-bottom: 10px;
+
+    padding: 0px;
 }
 
     .add-button:hover {
         transform: scale(1.2);
     }
+
+.project-header {
+    margin-bottom: 10px;
+}
+
+
+.project-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.project-title h1 {
+    margin: 0;
+}
+
+
+.rename-button {
+    border: none;
+    background: none;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+    transition: opacity 0.15s ease;
+}
+
+
+.project-title:hover .rename-button {
+    opacity: 1;
+}
+
+
+.project-navigation {
+    display: flex;
+    gap: 20px;
+
+    margin-top: 15px;
+}
+
+
+.project-navigation a {
+    text-decoration: none;
+}
+
+
+.notes-container {
+    display: flex;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.notes-sidebar {
+    width: 220px;
+
+    border-right: 1px solid #ddd;
+
+    padding: 15px;
+}
+
+
+.add-note-button {
+    width: 100%;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 8px;
+
+    margin-bottom: 15px;
+
+    cursor: pointer;
+}
+
+
+.note-list {
+    list-style: none;
+
+    padding: 0;
+}
+
+
+.note-list li {
+    padding: 8px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+
+.note-list li:hover {
+    background-color: #eee;
+}
+
+
+.note-list .active {
+    font-weight: bold;
+}
+
+
+.note-content {
+    flex: 1;
+
+    padding: 30px;
+}
+
+
+.markdown-content {
+    line-height: 1.6;
+}
+
+
+.markdown-editor {
+    display: flex;
+
+    gap: 20px;
+
+    height: 600px;
+}
+
+
+.editor-panel,
+.preview-panel {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.markdown-input {
+    flex: 1;
+
+    resize: none;
+
+    font-family: monospace;
+
+    padding: 15px;
+
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+
+.preview-panel {
+    overflow-y: auto;
+
+    border-left: 1px solid #ddd;
+
+    padding-left: 20px;
+}
+
+
+.markdown-content {
+    line-height: 1.6;
+}
+
+.note-title-input {
+    width: 100%;
+
+    font-size: 2rem;
+    font-weight: bold;
+
+    border: none;
+    outline: none;
+
+    margin-bottom: 20px;
+}
+
+
+.note-title-input:focus {
+    border-bottom: 1px solid #ccc;
+}

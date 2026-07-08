@@ -1,0 +1,33 @@
+﻿@model NotesApp.Models.Project
+
+<div class="project-header">
+
+    <div class="project-title">
+        <h1>@Model.Name</h1>
+
+        <button type="button"
+                class="rename-button"
+                data-bs-toggle="modal"
+                data-bs-target="#renameProjectModal">
+
+            <i class="bi bi-pencil"></i>
+
+        </button>
+    </div>
+
+
+    <nav class="project-navigation">
+
+        <a asp-page="./Tasks"
+           asp-route-id="@Model.Id">
+            Tasks
+        </a>
+
+        <a asp-page="./Notes"
+           asp-route-id="@Model.Id">
+            Notes
+        </a>
+
+    </nav>
+
+</div>

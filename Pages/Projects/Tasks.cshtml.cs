@@ -6,13 +6,13 @@ using NotesApp.Models;
 
 namespace NotesApp.Pages.Projects
 {
-    public class DetailsModel : PageModel
+    public class TasksModel : PageModel
     {
         private readonly AppDbContext _context;
 
         public Project Project { get; set; }
 
-        public DetailsModel(AppDbContext context)
+        public TasksModel(AppDbContext context)
         {
             _context = context;
         }
@@ -66,6 +66,22 @@ namespace NotesApp.Pages.Projects
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostRenameProjectAsync(int projectId, string name)
+        {
+            var project = await _context.Projects.FindAsync(projectId);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            project.Name = name.Trim();
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Details", new { id = projectId });
         }
 
         public async Task<IActionResult> OnPostDeleteTaskAsync(int id, int taskId)
