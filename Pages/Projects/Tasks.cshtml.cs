@@ -23,6 +23,7 @@ namespace NotesApp.Pages.Projects
                 .Include(p => p.Tasks
                     .OrderBy(t => t.IsComplete)
                     .ThenBy(t => t.Id))
+                .ThenInclude(t => t.Tags)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (Project == null)
@@ -47,7 +48,7 @@ namespace NotesApp.Pages.Projects
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { id });
+            return RedirectToPage("./Tasks", new { id });
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
@@ -65,7 +66,7 @@ namespace NotesApp.Pages.Projects
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
 
         public async Task<IActionResult> OnPostRenameProjectAsync(int projectId, string name)
@@ -81,7 +82,7 @@ namespace NotesApp.Pages.Projects
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { id = projectId });
+            return RedirectToPage("./Tasks", new { id = projectId });
         }
 
         public async Task<IActionResult> OnPostDeleteTaskAsync(int id, int taskId)
@@ -98,28 +99,108 @@ namespace NotesApp.Pages.Projects
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { id });
+            return RedirectToPage("./Tasks", new { id });
         }
 
-        public async Task<IActionResult> OnPostCreateTaskAsync(int projectId, string title)
+        public async Task<IActionResult> OnPostCreateEmptyTaskAsync(int projectId)
         {
-            if (string.IsNullOrWhiteSpace(title))
-            {
-                return RedirectToPage(new { id = projectId });
-            }
-
             var task = new ProjectTask
             {
-                Title = title,
+                Title = "New Task",
+                Description = "",
                 ProjectId = projectId,
-                IsComplete = false
+                IsComplete = false,
+                IsDraft = true
             };
 
             _context.Tasks.Add(task);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { id = projectId });
+            return new JsonResult(new
+            {
+                id = task.Id
+            });
+        }
+
+        public async Task<IActionResult> OnPostEditTaskAsync(int projectId, int taskId, string title, string description, string tags)
+        {
+            var task = await _context.Tasks
+                .Include(t => t.Tags)
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+
+            task.Title = title;
+            task.Description = description;
+            task.IsDraft = false;
+
+            foreach (var tag in task.Tags.ToList())
+            {
+                task.Tags.Remove(tag);
+            }
+
+            if (!string.IsNullOrWhiteSpace(tags))
+            {
+                var tagNames = tags
+                    .Split(',')
+                    .Select(t => t.Trim())
+                    .Where(t => !string.IsNullOrWhiteSpace(t));
+
+
+                foreach (var tagName in tagNames)
+                {
+                    var tag = await _context.Tags
+                        .FirstOrDefaultAsync(t => t.Name == tagName);
+
+
+                    if (tag == null)
+                    {
+                        tag = new Tag
+                        {
+                            Name = tagName
+                        };
+
+                        _context.Tags.Add(tag);
+                    }
+
+
+                    task.Tags.Add(tag);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToPage("./Tasks", new { id = projectId });
+        }
+
+        public async Task<IActionResult> OnPostDeleteDraftAsync(int taskId)
+        {
+            var task = await _context.Tasks
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            if (task.IsDraft)
+            {
+                _context.Tasks.Remove(task);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return new JsonResult(new
+            {
+                success = true
+            });
         }
     }
 }

@@ -1,5 +1,10 @@
 ﻿@page "{id:int}"
 @model NotesApp.Pages.Projects.TasksModel
+@Html.AntiForgeryToken()
+
+<script>
+    const projectId = @Model.Project.Id;
+</script>
 
 @{
     ViewData["Title"] = Model.Project.Name;
@@ -10,10 +15,8 @@
 <div class="section-header">
     <h2>Tasks</h2>
 
-    <button type="button"
-            class="add-button"
-            data-bs-toggle="modal"
-            data-bs-target="#createTaskModal">
+    <button id="add-task-button"
+            class="add-button">
         <i class="bi bi-plus"></i>
     </button>
 </div>
@@ -42,6 +45,20 @@ else
                 </form>
 
 
+                <button type="button"
+                        class="task-edit-button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editTaskModal"
+                        data-task-id="@task.Id"
+                        data-task-title="@task.Title"
+                        data-task-description="@task.Description"
+                        data-task-tags="@string.Join(", ", task.Tags.Select(t => t.Name))">
+
+                    <i class="bi bi-pencil"></i>
+
+                </button>
+
+
                 <form method="post"
                       asp-page-handler="DeleteTask"
                       asp-route-id="@Model.Project.Id"
@@ -63,11 +80,16 @@ else
                     </div>
 
                     <div class="task-description">
-                        <!-- Description will go here later -->
+                        @task.Description
                     </div>
 
                     <div class="task-tags">
-                        <!-- Tags will go here later -->
+                        @foreach (var tag in task.Tags)
+                        {
+                            <span class="tag">
+                                @tag.Name
+                            </span>
+                        }
                     </div>
 
                 </div>
@@ -103,6 +125,20 @@ else
                         </form>
 
 
+                        <button type="button"
+                                class="task-edit-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editTaskModal"
+                                data-task-id="@task.Id"
+                                data-task-title="@task.Title"
+                                data-task-description="@task.Description"
+                                data-task-tags="@string.Join(", ", task.Tags.Select(t => t.Name))">
+
+                            <i class="bi bi-pencil"></i>
+
+                        </button>
+
+
                         <form method="post"
                               asp-page-handler="DeleteTask"
                               asp-route-id="@Model.Project.Id"
@@ -124,11 +160,16 @@ else
                             </div>
 
                             <div class="task-description">
-                                <!-- Description will go here later -->
+                                @task.Description
                             </div>
 
                             <div class="task-tags">
-                                <!-- Tags will go here later -->
+                                @foreach (var tag in task.Tags)
+                                {
+                                    <span class="tag">
+                                        @tag.Name
+                                    </span>
+                                }
                             </div>
 
                         </div>
@@ -151,53 +192,85 @@ else
     </form>
 </footer>
 
-
-
-<div class="modal fade" id="createTaskModal" tabindex="-1">
+<div class="modal fade" id="editTaskModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form method="post" asp-page-handler="CreateTask">
+            <form method="post" asp-page-handler="EditTask">
 
                 <div class="modal-header">
+
                     <h5 class="modal-title">
-                        Create Task
+                        Edit Task
                     </h5>
 
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal">
-                    </button>
                 </div>
 
+
                 <div class="modal-body">
+
+                    <input type="hidden"
+                           id="edit-task-id"
+                           name="taskId" />
 
                     <input type="hidden"
                            name="projectId"
                            value="@Model.Project.Id" />
 
+
                     <div class="mb-3">
+
                         <label class="form-label">
                             Task title
                         </label>
 
-                        <input name="title"
-                               class="form-control" />
+                        <input id="edit-task-title"
+                               class="form-control"
+                               name="title" />
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Description
+                        </label>
+
+                        <textarea id="edit-task-description"
+                                  class="form-control"
+                                  name="description"
+                                  rows="4"></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Tags
+                        </label>
+
+                        <input id="edit-task-tags"
+                               class="form-control"
+                               name="tags"
+                               placeholder="school, important, portfolio" />
+
                     </div>
 
                 </div>
+
 
                 <div class="modal-footer">
 
                     <button type="button"
                             class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                            id="cancel-edit-task">
                         Cancel
                     </button>
 
                     <button type="submit"
                             class="btn btn-primary">
-                        Create
+                        Save
                     </button>
 
                 </div>

@@ -1,0 +1,37 @@
+﻿@model List<NotesApp.Models.Project>
+
+<div class="sidebar-header">
+
+    <button id="projects-collapse-button"
+            class="sidebar-collapse-button">
+
+        <i id="projects-collapse-icon"
+           class="bi bi-chevron-down"></i>
+
+    </button>
+
+    <span>Projects</span>
+
+    <a asp-page="/Projects/Create"
+       class="icon-button">
+
+        <i class="bi bi-plus"></i>
+    </a>
+
+</div>
+
+<div id="projects-list"
+     class="sidebar-items">
+
+    @foreach (var project in Model)
+    {
+        <a asp-page="/Projects/Tasks"
+           asp-route-id="@project.Id"
+           class="sidebar-item">
+
+            @project.Name
+
+        </a>
+    }
+
+</div>

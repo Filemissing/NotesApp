@@ -31,7 +31,10 @@ namespace NotesApp.Pages.Projects
             _context.Projects.Add(Project);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Tasks", new
+            {
+                id = Project.Id
+            });
         }
     }
 }

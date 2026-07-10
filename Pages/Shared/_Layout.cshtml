@@ -11,28 +11,35 @@
     <link rel="stylesheet" href="~/NotesApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar">
-            <h3>NotesApp</h3>
 
-            <nav>
-                <a asp-area="" asp-page="/Index">Home</a>
-                <a asp-area="" asp-page="/Projects/Index">Projects</a>
-                <a asp-area="" asp-page="/Privacy">Privacy</a>
-            </nav>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+
+            <h3 class="sidebar-title">
+                NotesApp
+            </h3>
+
+            @await Component.InvokeAsync("ProjectSidebar")
+
         </aside>
 
-        <main class="content">
+
+        <main class="main-content">
+
             @RenderBody()
+
         </main>
+
     </div>
 
-    
 
+    <script src="~/js/sidebar.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

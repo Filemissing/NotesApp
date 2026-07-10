@@ -14,5 +14,6 @@ namespace NotesApp.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTask> Tasks { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
